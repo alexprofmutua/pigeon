@@ -1,23 +1,23 @@
 {
   "week": 1,
-  "phase": "Phase 0 — Foundation",
+  "phase": "Phase 0 \u2014 Foundation",
   "label": "Week 1",
   "tasks": [
     {
       "id": "git-init",
       "title": "Initialize private git repo + GitHub remote",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-04T08:26:43.969794+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "frontend-scaffold",
       "title": "Scaffold React/Vite frontend (hello world)",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-04T08:44:05.510869+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "dev-readme",
@@ -29,7 +29,7 @@
     },
     {
       "id": "week-tickets",
-      "title": "Write 5–10 Phase 1 tickets on project board",
+      "title": "Write 5\u201310 Phase 1 tickets on project board",
       "owner": "alex",
       "done": false,
       "completed_at": null,
@@ -53,7 +53,7 @@
     },
     {
       "id": "ci",
-      "title": "GitHub Actions CI — lint + test on pull request",
+      "title": "GitHub Actions CI \u2014 lint + test on pull request",
       "owner": "cletus",
       "done": false,
       "completed_at": null,
