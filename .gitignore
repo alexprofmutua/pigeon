@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node / frontend
+node_modules/
+dist/
+build/
+.next/
+.vite/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Secrets and local config
+.env
+.env.*
+.pigeon-user
+*.key
+*.pem
+secrets.*
+config.local.*
+
+# Databases and user data
+*.db
+*.sqlite
+*.sqlite3
+uploads/
+scans/
+exports/
+private-data/
+
+# OS/editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Logs
+*.log
+logs/
+
