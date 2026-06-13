@@ -22,6 +22,8 @@ Our planning and product docs for the Pigeon chess archive app.
 | [`what_we_learned.md`](what_we_learned.md) | Weekly log — what we did and learned |
 | [`wireframes.md`](wireframes.md) | Screen layout sketches with examples |
 | [`ocr-strategy.md`](ocr-strategy.md) | Our OCR engine choice and evaluation plan |
+| [`phase-1-tickets.md`](phase-1-tickets.md) | Phase 1 tickets and build order |
+| [`test-data-protocol.md`](test-data-protocol.md) | OCR test data and consent rules |
 
 ## Reading Order
 
