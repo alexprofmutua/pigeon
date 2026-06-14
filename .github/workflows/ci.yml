@@ -1,0 +1,43 @@
+name: Python Backend CI
+
+#1. Triggers the workflow on any pull request to the main branch
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-and-lint:
+    #2. Tells GitHub to spin up a fresh Ubuntu Linux virtual machine
+    runs-on: ubuntu-latest
+
+    steps:
+    #3. Checks out your repository code onto the virtual machine
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    #4. Sets up Python on the virtual machine
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    #5. Installs the linter, testing tools, and project dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
+
+    #6. Runs the Linter (Checks for clean code syntax)
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 backend --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. (You can remove this later to strictly enforce code style!)
+        flake8 backend --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    #7. Runs the Tests (Looks for a folder named 'tests' or files named 'test_*.py')
+    - name: Run tests with pytest
+      run: |
+        cd backend
+        pytest
