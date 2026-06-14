@@ -23,6 +23,7 @@ env/
 # Secrets and local config
 .env
 .env.*
+!.env.example
 .pigeon-user
 *.key
 *.pem
