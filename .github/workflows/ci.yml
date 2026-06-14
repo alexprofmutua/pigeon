@@ -38,6 +38,5 @@ jobs:
 
     #7. Runs the Tests (Looks for a folder named 'tests' or files named 'test_*.py')
     - name: Run tests with pytest
-      run: |
-        cd ~/backend
-        pytest
+      working-directory: backend
+      run: pytest
