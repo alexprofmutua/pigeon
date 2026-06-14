@@ -74,4 +74,13 @@ We commit the JSON so both of us see the same checklist. When one of us marks a 
 
 ## New week
 
-Copy `week-01.json` to `week-02.json`, reset tasks, update `todos/current.json` to `"week-02.json"`.
+1. Copy the previous week file (e.g. `week-01.json` → `week-02.json`).
+2. Reset tasks for the new phase — see [`docs/phase-1-tickets.md`](../docs/phase-1-tickets.md) for Week 2+.
+3. Update `todos/current.json` to `"week-02.json"`.
+4. Both founders run `pdone status` after `git pull`.
+
+| Week | File | Phase |
+|------|------|-------|
+| 1 | `week-01.json` | Phase 0 — Foundation |
+| 2 | `week-02.json` | Phase 1 — Upload + OCR spike |
+| 3+ | `week-03.json` … | Phase 1 continued → Phase 2 |

@@ -23,25 +23,25 @@
       "id": "dev-readme",
       "title": "Dev setup section in README + folder layout",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-07T20:00:02.473617+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "week-tickets",
       "title": "Write 5\u201310 Phase 1 tickets on project board",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-13T23:55:28.873309+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "ocr-protocol",
       "title": "OCR test data protocol (consent, no private scans in repo)",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-13T23:55:28.927239+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "backend-scaffold",

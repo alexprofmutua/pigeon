@@ -66,14 +66,89 @@ Full index: [`docs/README.md`](docs/README.md)
 | [`docs/what_we_learned.md`](docs/what_we_learned.md) | Weekly log — what we did and learned |
 | [`docs/wireframes.md`](docs/wireframes.md) | Screen layout sketches |
 | [`docs/ocr-strategy.md`](docs/ocr-strategy.md) | OCR engine choice and testing plan |
+| [`docs/phase-1-tickets.md`](docs/phase-1-tickets.md) | Phase 1 GitHub issues / build order |
+| [`docs/test-data-protocol.md`](docs/test-data-protocol.md) | Consent rules for scoresheet test images |
 
 ## Our Stack
 
-Python backend (FastAPI), web frontend (React + Vite), SQL database. We confirm this in Week 1 Phase 0.
+| Layer | Choice | Why |
+|-------|--------|-----|
+| Frontend | React + Vite | Fast dev server, Alex owns UI |
+| Backend | FastAPI (Python) | Matches our Python skills, async APIs |
+| Database | SQLite (dev) → Postgres (staging) | Simple locally, standard in production |
+| OCR (Phase 1) | Tesseract + OpenCV | Free, local — see `docs/ocr-strategy.md` |
+| Chess logic | python-chess | PGN + legality validation |
+
+## Project layout
+
+```
+pigeon/
+├── backend/           # FastAPI (Cletus — Week 1 scaffold)
+├── frontend/          # React + Vite (Alex)
+├── docs/              # Plans, specs, protocols
+├── scripts/           # pdone, setup-shell.sh
+├── test-fixtures/     # Synthetic/consented scoresheets only
+├── todos/             # Weekly task JSON (week-01.json, …)
+└── README.md
+```
+
+## Development setup
+
+### Prerequisites
+
+- **Node.js** 18+ (`node -v`, `npm -v`)
+- **Python** 3.11+ (`python3 -v`)
+- **Git** + GitHub access
+
+Install later (Phase 1): **Tesseract** OCR binary — documented when Cletus wires OCR.
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open **http://localhost:5173/**
+
+### Backend
+
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --app-dir backend
+```
+
+Or from inside `backend/`:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+API runs at **http://localhost:8000** — try **http://localhost:8000/health**
+
+### Weekly todos
+
+```bash
+./scripts/setup-shell.sh   # once — adds pdone to ~/.zshrc
+pdone who alex             # or: pdone who cletus
+pdone status
+```
+
+See [`docs/todos.md`](docs/todos.md).
+
+### Environment variables
+
+Copy `.env.example` to `.env` when Cletus adds it — never commit `.env`.
 
 ## Status
 
-Planning complete. **We start Phase 0 on Monday** — git, scaffold, CI. No production code yet.
+**Week 2 (Phase 1)** — frontend + backend merged on `integrate/alex-plus-cletus`. Next: upload UI + wire to API.
+
+See [`docs/merge-recovery.md`](docs/merge-recovery.md) if git ever feels confusing.
 
 ## Long-Term Vision
 
