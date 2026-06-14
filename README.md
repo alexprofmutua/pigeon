@@ -114,17 +114,21 @@ Open **http://localhost:5173/**
 
 ### Backend
 
-*(Coming when Cletus merges `feat/backend-scaffold`)*
-
 ```bash
 cd backend
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+uvicorn app.main:app --reload --app-dir backend
+```
+
+Or from inside `backend/`:
+
+```bash
 uvicorn app.main:app --reload
 ```
 
-API will run at **http://localhost:8000**
+API runs at **http://localhost:8000** — try **http://localhost:8000/health**
 
 ### Weekly todos
 
@@ -142,9 +146,9 @@ Copy `.env.example` to `.env` when Cletus adds it — never commit `.env`.
 
 ## Status
 
-**Week 1 (Phase 0)** — git + frontend scaffold done; backend + CI in progress (Cletus).
+**Week 2 (Phase 1)** — frontend + backend merged on `integrate/alex-plus-cletus`. Next: upload UI + wire to API.
 
-Next: Phase 1 core loop — see [`docs/phase-1-tickets.md`](docs/phase-1-tickets.md).
+See [`docs/merge-recovery.md`](docs/merge-recovery.md) if git ever feels confusing.
 
 ## Long-Term Vision
 
