@@ -47,17 +47,17 @@
       "id": "backend-scaffold",
       "title": "Scaffold FastAPI backend (hello world)",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T09:48:47.241325+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "ci",
       "title": "GitHub Actions CI \u2014 lint + test on pull request",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T09:50:10.523016+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "stack-readme",
@@ -71,9 +71,9 @@
       "id": "env-example",
       "title": "Add .env.example for local secrets",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T09:52:17.316360+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "github-access",
