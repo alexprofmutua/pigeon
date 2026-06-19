@@ -37,6 +37,7 @@ uploads/
 scans/
 exports/
 private-data/
+backend/storage/
 
 # OS/editor files
 .DS_Store

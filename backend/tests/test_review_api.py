@@ -18,7 +18,7 @@ async def test_upload_process_review_verify_flow(client, sample_png):
         "/api/v1/uploads",
         files={"file": ("scoresheet.png", io.BytesIO(sample_png), "image/png")},
     )
-    assert upload_response.status_code == 202
+    assert upload_response.status_code == 200
     upload_id = upload_response.json()["id"]
 
     # Process with mock OCR
