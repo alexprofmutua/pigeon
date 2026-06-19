@@ -50,7 +50,7 @@
       "title": "Scaffold FastAPI backend (hello world) \u2014 Week 1 carryover",
       "owner": "cletus",
       "done": true,
-      "completed_at": "2026-06-19T07:39:06.954716+00:00",
+      "completed_at": "2026-06-14T20:20:45.870816+00:00",
       "completed_by": "cletus"
     },
     {
@@ -74,7 +74,7 @@
       "title": "GitHub Actions CI \u2014 lint + test on PR \u2014 Week 1 carryover",
       "owner": "cletus",
       "done": true,
-      "completed_at": "2026-06-19T07:39:23.688760+00:00",
+      "completed_at": "2026-06-14T20:21:48.604490+00:00",
       "completed_by": "cletus"
     },
     {
@@ -82,7 +82,7 @@
       "title": "Add .env.example for local secrets \u2014 Week 1 carryover",
       "owner": "cletus",
       "done": true,
-      "completed_at": "2026-06-19T07:40:27.362585+00:00",
+      "completed_at": "2026-06-14T20:24:56.173963+00:00",
       "completed_by": "cletus"
     }
   ]
