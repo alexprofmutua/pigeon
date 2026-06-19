@@ -36,4 +36,4 @@ class OcrProvider(ABC):
         """Extract chess notation and header fields from a scoresheet image."""
 
     def supports(self, mime_type: str) -> bool:
-        return mime_type in {"image/jpeg", "image/png", "image/webp"}
+        return mime_type in {"image/jpeg", "image/png"}

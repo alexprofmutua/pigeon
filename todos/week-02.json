@@ -57,9 +57,9 @@
       "id": "upload-api",
       "title": "Image upload API \u2014 JPEG/PNG, size limit, safe storage (ticket 1.1)",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-19T07:37:42.041921+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "ocr-spike",
