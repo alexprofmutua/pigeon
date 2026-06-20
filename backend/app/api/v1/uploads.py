@@ -7,8 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 from app.database import get_db
-from app.schemas import UploadResponse
-from app.services import UploadService
+from app.schemas import ProcessUploadResponse, UploadResponse
+from app.services import UploadService, build_process_upload_response
 from app.upload_validation import validate_image_upload
 
 router = APIRouter()
@@ -49,11 +49,12 @@ async def get_upload(upload_id: UUID, db: AsyncSession = Depends(get_db)):
     return upload
 
 
-@router.post("/uploads/{upload_id}/process", response_model=UploadResponse)
+@router.post("/uploads/{upload_id}/process", response_model=ProcessUploadResponse)
 async def process_upload(upload_id: UUID, db: AsyncSession = Depends(get_db)):
     service = UploadService(db)
     try:
-        return await service.process_upload(upload_id)
+        upload = await service.process_upload(upload_id)
+        return build_process_upload_response(upload)
     except ValueError as exc:
         raise HTTPException(status_code = 404, detail = str(exc)) from exc
     except Exception as exc:
