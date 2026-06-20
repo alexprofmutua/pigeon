@@ -22,6 +22,8 @@ class OcrMoveCandidate:
 @dataclass
 class OcrResult:
     provider: str
+    raw_text: str = ""
+    lines: list[str] = field(default_factory=list)
     moves: list[OcrMoveCandidate] = field(default_factory=list)
     header_fields: dict[str, str] = field(default_factory=dict)
     raw_blocks: list[dict] = field(default_factory=list)

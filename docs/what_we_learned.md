@@ -81,6 +81,46 @@ Define product vision, documentation, team structure, and master plan before wri
 
 ---
 
+## Week 2 — Phase 1 backend (June 2026)
+
+### Weekly goal
+
+Ship upload API, OCR spike, and backend docs so Alex can wire the frontend.
+
+### What we did
+
+- Merged upload API (ticket 1.1): JPEG/PNG validation, size limit, `POST /api/v1/uploads`.
+- Implemented OCR spike (ticket 1.3, Option A): `TesseractOcrProvider` + `POST /api/v1/uploads/{id}/process` returns `raw_text` and `lines`.
+- Fixed CI to run pytest from `backend/`; added `.env.example` with OCR and CORS settings.
+- Documented stack rationale in README; CORS allows `http://localhost:5173` for Vite.
+- Removed accidental commits of local upload files under `backend/storage/`.
+
+### What we accomplished
+
+- End-to-end backend path: upload image → process → JSON with OCR output (mock in CI, Tesseract locally).
+- Swappable `OcrProvider` — mock for tests, Tesseract for real sheets.
+- 12 pytest tests passing on PR CI.
+
+### What we learned
+
+- **Tesseract on handwriting is noisy** — garbled `raw_text` on real scoresheets is expected; human correction UX is the product, not perfect OCR.
+- **OpenCV preprocessing helps contrast** but does not fix cursive or cramped notation.
+- **Keep CI on mock OCR** — avoids Tesseract binary in GitHub Actions and keeps tests deterministic.
+- **CORS must be set before frontend integration** — localhost:5173 from day one.
+
+### Blockers
+
+- Consented test fixture image (ticket 1.10) — Alex.
+- Branch protection on `main` — Alex (repo admin); see [`docs/github-access.md`](docs/github-access.md).
+
+### Next week
+
+1. Alex: upload UI + Vite proxy to backend.
+2. Shared test fixture in `test-fixtures/`.
+3. Correction screen layout with image + move list.
+
+---
+
 ## Week 1 — [fill in dates when complete]
 
 ### Weekly goal

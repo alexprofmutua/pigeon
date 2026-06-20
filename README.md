@@ -63,6 +63,7 @@ Full index: [`docs/README.md`](docs/README.md)
 | [`docs/team-workflow.md`](docs/team-workflow.md) | How we work — git, PRs, weekly rhythm |
 | [`docs/todos.md`](docs/todos.md) | Weekly JSON todos + `pdone` command |
 | [`docs/privacy-security.md`](docs/privacy-security.md) | Security rules from day one |
+| [`docs/github-access.md`](docs/github-access.md) | 2FA + branch protection checklist |
 | [`docs/what_we_learned.md`](docs/what_we_learned.md) | Weekly log — what we did and learned |
 | [`docs/wireframes.md`](docs/wireframes.md) | Screen layout sketches |
 | [`docs/ocr-strategy.md`](docs/ocr-strategy.md) | OCR engine choice and testing plan |
@@ -71,13 +72,19 @@ Full index: [`docs/README.md`](docs/README.md)
 
 ## Our Stack
 
+We chose a **Python backend + React frontend + SQL database** split so each founder can own their lane while sharing one API contract.
+
 | Layer | Choice | Why |
 |-------|--------|-----|
-| Frontend | React + Vite | Fast dev server, Alex owns UI |
-| Backend | FastAPI (Python) | Matches our Python skills, async APIs |
-| Database | SQLite (dev) → Postgres (staging) | Simple locally, standard in production |
-| OCR (Phase 1) | Tesseract + OpenCV | Free, local — see `docs/ocr-strategy.md` |
-| Chess logic | python-chess | PGN + legality validation |
+| Frontend | React + Vite | Fast dev server, component ecosystem, Alex owns UI |
+| Backend | FastAPI (Python) | Async APIs, Pydantic validation, matches our Python coursework |
+| Database | SQLite (dev) → Postgres (staging) | Zero setup locally; standard managed Postgres in production |
+| OCR (Phase 1) | Tesseract + OpenCV | Free, runs locally, swappable via `OcrProvider` — see [`docs/ocr-strategy.md`](docs/ocr-strategy.md) |
+| Chess logic | python-chess | PGN export and move legality validation |
+
+**Why not a monolith or Next.js full-stack?** We want clear boundaries: Cletus ships upload/OCR/review APIs; Alex ships capture, correction UX, and auth UI. FastAPI + React is the same pattern used at many internship-target companies (separate services, OpenAPI docs, CI per layer).
+
+**Why Tesseract first?** Handwriting OCR is hard; Phase 1 proves the pipeline (upload → process → raw text → human correction) without cloud cost or API keys. Cloud OCR (Google Vision, etc.) stays behind the same `OcrProvider` interface for hard sheets later.
 
 ## Project layout
 
@@ -98,9 +105,8 @@ pigeon/
 
 - **Node.js** 18+ (`node -v`, `npm -v`)
 - **Python** 3.11+ (`python3 -v`)
-- **Git** + GitHub access
-
-Install later (Phase 1): **Tesseract** OCR binary — documented when Cletus wires OCR.
+- **Git** + GitHub access — see [`docs/github-access.md`](docs/github-access.md) for 2FA and branch protection
+- **Tesseract** (for local OCR testing): `brew install tesseract` on macOS
 
 ### Frontend
 
@@ -119,16 +125,23 @@ cd backend
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload --app-dir backend
-```
-
-Or from inside `backend/`:
-
-```bash
+cp .env.example .env   # OCR_PROVIDER=mock by default; use tesseract after brew install
 uvicorn app.main:app --reload
 ```
 
 API runs at **http://localhost:8000** — try **http://localhost:8000/health**
+
+**OCR spike (local):** set `OCR_PROVIDER=tesseract` in `backend/.env`, then:
+
+```bash
+# Upload a JPEG/PNG scoresheet
+curl -X POST "http://127.0.0.1:8000/api/v1/uploads" -F "file=@/path/to/sheet.png"
+
+# Process — returns raw_text and lines (handwriting quality varies)
+curl -X POST "http://127.0.0.1:8000/api/v1/uploads/{UPLOAD_ID}/process"
+```
+
+CI and pytest use `OCR_PROVIDER=mock` so Tesseract is not required in GitHub Actions.
 
 ### Weekly todos
 
@@ -140,13 +153,9 @@ pdone status
 
 See [`docs/todos.md`](docs/todos.md).
 
-### Environment variables
-
-Copy `.env.example` to `.env` when Cletus adds it — never commit `.env`.
-
 ## Status
 
-**Week 2 (Phase 1)** — frontend + backend merged on `integrate/alex-plus-cletus`. Next: upload UI + wire to API.
+**Week 2 (Phase 1)** — upload API merged; OCR spike on `feature/ocr-spike` (Tesseract + raw text on process). Next: Alex wires upload UI + Vite proxy to the API.
 
 See [`docs/merge-recovery.md`](docs/merge-recovery.md) if git ever feels confusing.
 
