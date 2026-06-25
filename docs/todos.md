@@ -83,4 +83,4 @@ We commit the JSON so both of us see the same checklist. When one of us marks a 
 |------|------|-------|
 | 1 | `week-01.json` | Phase 0 — Foundation |
 | 2 | `week-02.json` | Phase 1 — Upload + OCR spike |
-| 3+ | `week-03.json` … | Phase 1 continued → Phase 2 |
+| 3 | `week-03.json` | Phase 1 — Parser, validation, PGN export |

@@ -81,16 +81,57 @@ Define product vision, documentation, team structure, and master plan before wri
 
 ---
 
-## Week 1 — [fill in dates when complete]
+## Week 1 — June 2026
 
 ### Weekly goal
 
-### What we did
+Phase 0 foundation — git, frontend scaffold, docs, todos.
 
 ### What we accomplished
 
+- Git repo + GitHub, React/Vite frontend, planning docs, `pdone` tracker.
+- Merged Cletus backend + Alex docs onto `main`.
+
+---
+
+## Week 2 — June 2026
+
+### Weekly goal
+
+Upload a scoresheet from the browser and get raw OCR text back from the API.
+
+### What we did
+
+- Built upload UI with drag-drop and camera capture (`frontend/src/components/UploadView.jsx`).
+- Added Vite proxy and API client (`vite.config.js`, `frontend/src/api.js`).
+- Built correction screen shell — image left, moves right (`CorrectionView.jsx`).
+- Created synthetic test fixture `test-fixtures/synthetic-01.svg` + `docs/testing.md`.
+- Fixed backend CORS for `localhost:5173`.
+- Merged integrate branch to `main` after partner merge confusion (see `merge-recovery.md`).
+
+### What we accomplished
+
+- End-to-end upload flow from browser → FastAPI upload → process endpoint.
+- Pigeon-branded UI replacing default Vite template.
+- Week 3 todos ready for parser, validation, and wired correction.
+
 ### What we learned
+
+- **`git pull` on `main` does not bring other branches** — must merge feature branches before expecting files on main.
+- Vite proxy avoids CORS pain in dev; still fixed CORS on backend for direct calls.
+- Correction layout is the highest-risk UX — building the shell early was right.
 
 ### Blockers
 
-### Next week
+- Correction screen still uses placeholder moves — wire to review API in Week 3.
+- Cletus Week 2 tasks (parser, real OCR) still open on his side.
+
+### Next week (Week 3)
+
+1. Wire correction UI to backend review API.
+2. Cletus: move parser + chess validation + PGN export.
+3. Alex: uncertainty highlights + full e2e flow + PGN download button.
+
+---
+
+## Week 3 — [fill in when complete]

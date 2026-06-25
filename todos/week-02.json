@@ -3,47 +3,47 @@
   "phase": "Phase 1 — Core loop (Week 1 of 3)",
   "label": "Week 2",
   "goal": "Upload a scoresheet from the browser and get raw OCR text back from the API.",
-  "notes": "Cletus: finish any open Week 1 tasks (backend-scaffold, ci, env-example) before or in parallel with upload-api.",
+  "notes": "Alex tasks complete. Cletus carryovers + OCR/parser continue in Week 3.",
   "tasks": [
     {
       "id": "upload-ui",
       "title": "Upload UI — drag-drop + camera capture (ticket 1.2)",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T00:00:00+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "vite-api-proxy",
       "title": "Vite proxy / API client — frontend talks to localhost:8000",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T00:00:00+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "correction-layout",
       "title": "Correction screen shell — image left, move list right (wireframes)",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T00:00:00+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "synthetic-fixture-01",
       "title": "First synthetic scoresheet in test-fixtures/ + expected moves note",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T00:00:00+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "week-2-log",
       "title": "Update what_we_learned.md — Week 2 section",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T00:00:00+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "backend-scaffold",
