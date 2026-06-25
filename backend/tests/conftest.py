@@ -3,8 +3,14 @@ import io
 import pytest
 from httpx import ASGITransport, AsyncClient
 
+from app.config import settings
 from app.database import Base, engine
 from app.main import app
+
+
+@pytest.fixture(autouse=True)
+def use_mock_ocr(monkeypatch):
+    monkeypatch.setattr(settings, "ocr_provider", "mock")
 
 
 @pytest.fixture(autouse=True)
@@ -30,5 +36,5 @@ def sample_png() -> bytes:
     return (
         b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01"
         b"\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\x0cIDATx\x9cc\xf8\x0f\x00"
-        b"\x01\x01\x01\x00\x18\xdd\x8d\xb4\x00\x00\x00\x00IEND\xaeB`\x82"
+        b"\x01\x01\x01\x00\x18\xdd\x8d\xb4\x00\x00\x00\x00IEND\xaeB\x60\x82"
     )

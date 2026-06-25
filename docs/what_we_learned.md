@@ -100,37 +100,46 @@ Phase 0 foundation — git, frontend scaffold, docs, todos.
 
 Upload a scoresheet from the browser and get raw OCR text back from the API.
 
-### What we did
+### What we did (Cletus — backend)
 
-- Built upload UI with drag-drop and camera capture (`frontend/src/components/UploadView.jsx`).
-- Added Vite proxy and API client (`vite.config.js`, `frontend/src/api.js`).
+- Merged upload API (ticket 1.1): JPEG/PNG validation, size limit, `POST /api/v1/uploads`.
+- Implemented OCR spike (ticket 1.3): `TesseractOcrProvider` + `POST /api/v1/uploads/{id}/process`.
+- Fixed CI to run pytest from `backend/`; added `.env.example` with OCR and CORS settings.
+- Documented stack rationale in README; CORS via `settings.cors_origins_list`.
+- Removed accidental commits of local upload files under `backend/storage/`.
+
+### What we did (Alex — frontend)
+
+- Built upload UI with drag-drop and camera capture (`UploadView.jsx`).
+- Added Vite proxy and API client (`vite.config.js`, `api.js`).
 - Built correction screen shell — image left, moves right (`CorrectionView.jsx`).
 - Created synthetic test fixture `test-fixtures/synthetic-01.svg` + `docs/testing.md`.
-- Fixed backend CORS for `localhost:5173`.
 - Merged integrate branch to `main` after partner merge confusion (see `merge-recovery.md`).
 
 ### What we accomplished
 
-- End-to-end upload flow from browser → FastAPI upload → process endpoint.
+- End-to-end path: browser upload → FastAPI → OCR process → JSON response.
 - Pigeon-branded UI replacing default Vite template.
+- Swappable `OcrProvider` — mock for CI, Tesseract locally.
 - Week 3 todos ready for parser, validation, and wired correction.
 
 ### What we learned
 
-- **`git pull` on `main` does not bring other branches** — must merge feature branches before expecting files on main.
-- Vite proxy avoids CORS pain in dev; still fixed CORS on backend for direct calls.
+- **`git pull` on `main` does not bring other branches** — must merge feature branches first.
+- **Tesseract on handwriting is noisy** — correction UX is the product, not perfect OCR.
+- Vite proxy + CORS config both matter for local dev.
 - Correction layout is the highest-risk UX — building the shell early was right.
 
 ### Blockers
 
 - Correction screen still uses placeholder moves — wire to review API in Week 3.
-- Cletus Week 2 tasks (parser, real OCR) still open on his side.
+- Branch protection on `main` — Alex (repo admin).
 
 ### Next week (Week 3)
 
-1. Wire correction UI to backend review API.
+1. Alex: wire correction UI to review API + uncertainty highlights + e2e flow.
 2. Cletus: move parser + chess validation + PGN export.
-3. Alex: uncertainty highlights + full e2e flow + PGN download button.
+3. Both: more synthetic fixtures (ticket 1.10).
 
 ---
 

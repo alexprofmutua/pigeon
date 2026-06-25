@@ -77,6 +77,11 @@ class UploadResponse(ORMModel):
     ocr_completed_at: datetime | None
 
 
+class ProcessUploadResponse(UploadResponse):
+    raw_text: str | None = None
+    lines: list[str] = Field(default_factory=list)
+
+
 class FieldWithConfidence(BaseModel):
     value: str | None
     confidence: float | None = None

@@ -3,7 +3,7 @@
   "phase": "Phase 1 — Core loop (Week 1 of 3)",
   "label": "Week 2",
   "goal": "Upload a scoresheet from the browser and get raw OCR text back from the API.",
-  "notes": "Alex tasks complete. Cletus carryovers + OCR/parser continue in Week 3.",
+  "notes": "Alex tasks complete. Cletus backend tasks complete on main — mark with pdone.",
   "tasks": [
     {
       "id": "upload-ui",
@@ -49,41 +49,41 @@
       "id": "backend-scaffold",
       "title": "Scaffold FastAPI backend (hello world) — Week 1 carryover",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T00:00:00+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "upload-api",
       "title": "Image upload API — JPEG/PNG, size limit, safe storage (ticket 1.1)",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T00:00:00+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "ocr-spike",
       "title": "OCR spike — Tesseract + raw text + line breaks (ticket 1.3)",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T00:00:00+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "ci",
       "title": "GitHub Actions CI — lint + test on PR — Week 1 carryover",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T00:00:00+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "env-example",
       "title": "Add .env.example for local secrets — Week 1 carryover",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-14T00:00:00+00:00",
+      "completed_by": "cletus"
     }
   ]
 }

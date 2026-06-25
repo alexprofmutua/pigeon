@@ -32,6 +32,7 @@ from app.schemas import (
 )
 
 
+
 class UploadService:
     def __init__(self, db: AsyncSession):
         self.db = db
@@ -89,9 +90,10 @@ class UploadService:
             upload.status = UploadStatus.COMPLETED
             upload.ocr_completed_at = datetime.now(UTC)
 
-            game = await self._get_or_create_game(upload, ocr_result)
-            upload.game_id = game.id
-            await self._apply_ocr_to_game(game, ocr_result)
+            if ocr_result.moves:
+                game = await self._get_or_create_game(upload, ocr_result)
+                upload.game_id = game.id
+                await self._apply_ocr_to_game(game, ocr_result)
 
             await self.db.commit()
             await self.db.refresh(upload)
@@ -290,6 +292,18 @@ class ReviewService:
         return result.scalar_one_or_none()
 
 
+def build_process_upload_response(upload: ScoresheetUpload):
+    from app.schemas import ProcessUploadResponse, UploadResponse
+
+    ocr_data = upload.ocr_raw_json or {}
+    base = UploadResponse.model_validate(upload)
+    return ProcessUploadResponse(
+        **base.model_dump(),
+        raw_text=ocr_data.get("raw_text"),
+        lines=ocr_data.get("lines", []),
+    )
+
+
 def _extension_for_mime(mime_type: str) -> str:
     return {
         "image/jpeg": ".jpg",
@@ -301,6 +315,8 @@ def _extension_for_mime(mime_type: str) -> str:
 def _ocr_result_to_dict(ocr_result) -> dict:
     return {
         "provider": ocr_result.provider,
+        "raw_text": ocr_result.raw_text,
+        "lines": ocr_result.lines,
         "header_fields": ocr_result.header_fields,
         "moves": [
             {
