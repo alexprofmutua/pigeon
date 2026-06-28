@@ -19,6 +19,7 @@ from app.models import (
     UploadStatus,
 )
 from app.ocr import get_ocr_provider
+from app.parsing.move_parser import parse_move_lines, parse_move_text
 from app.pgn.validator import build_pgn, validate_move_sequence
 from app.schemas import (
     FieldWithConfidence,
@@ -84,6 +85,14 @@ class UploadService:
             provider = get_ocr_provider()
             image_bytes = Path(upload.storage_path).read_bytes()
             ocr_result = await provider.extract(image_bytes, mime_type=upload.mime_type)
+
+            # Tesseract (and other providers) may return raw text without structured moves.
+            # Ticket 1.4: parse lines/text into OcrMoveCandidate list when needed.
+            if not ocr_result.moves:
+                if ocr_result.lines:
+                    ocr_result.moves = parse_move_lines(ocr_result.lines)
+                elif ocr_result.raw_text:
+                    ocr_result.moves = parse_move_text(ocr_result.raw_text)
 
             upload.ocr_provider = ocr_result.provider
             upload.ocr_raw_json = _ocr_result_to_dict(ocr_result)
