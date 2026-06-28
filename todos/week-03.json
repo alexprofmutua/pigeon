@@ -1,13 +1,13 @@
 {
   "week": 3,
-  "phase": "Phase 1 — Core loop (Week 2 of 3)",
+  "phase": "Phase 1 \u2014 Core loop (Week 2 of 3)",
   "label": "Week 3",
   "goal": "Wire correction UI to real moves, validate chess legality, export PGN.",
   "notes": "Cletus: mark Week 2 carryovers done with pdone if already shipped. Week 3 closes Phase 1 loop.",
   "tasks": [
     {
       "id": "correction-wired",
-      "title": "Wire correction screen to review API — editable moves (ticket 1.6)",
+      "title": "Wire correction screen to review API \u2014 editable moves (ticket 1.6)",
       "owner": "alex",
       "done": false,
       "completed_at": null,
@@ -23,7 +23,7 @@
     },
     {
       "id": "e2e-flow",
-      "title": "Wire full scan → correct → export flow in frontend (ticket 1.9)",
+      "title": "Wire full scan \u2192 correct \u2192 export flow in frontend (ticket 1.9)",
       "owner": "alex",
       "done": false,
       "completed_at": null,
@@ -39,7 +39,7 @@
     },
     {
       "id": "week-3-log",
-      "title": "Update what_we_learned.md — Week 3 section",
+      "title": "Update what_we_learned.md \u2014 Week 3 section",
       "owner": "alex",
       "done": false,
       "completed_at": null,
@@ -55,15 +55,15 @@
     },
     {
       "id": "move-parser",
-      "title": "Move parser — SAN/algebraic → structured list + tests (ticket 1.4)",
+      "title": "Move parser \u2014 SAN/algebraic \u2192 structured list + tests (ticket 1.4)",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-28T22:03:56.877143+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "chess-validation",
-      "title": "Chess validation — python-chess, first illegal move (ticket 1.5)",
+      "title": "Chess validation \u2014 python-chess, first illegal move (ticket 1.5)",
       "owner": "cletus",
       "done": false,
       "completed_at": null,
@@ -79,7 +79,7 @@
     },
     {
       "id": "fixtures-02-03",
-      "title": "Add synthetic fixtures 02–03 + testing.md notes (ticket 1.10)",
+      "title": "Add synthetic fixtures 02\u201303 + testing.md notes (ticket 1.10)",
       "owner": "cletus",
       "done": false,
       "completed_at": null,
