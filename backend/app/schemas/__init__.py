@@ -109,6 +109,7 @@ class MoveErrorResponse(BaseModel):
 class ValidationResponse(BaseModel):
     legal: bool
     legal_through_ply: int
+    first_illegal_ply: int | None
     errors: list[MoveErrorResponse]
 
 

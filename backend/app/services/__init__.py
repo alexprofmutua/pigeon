@@ -220,6 +220,7 @@ class ReviewService:
             validation=ValidationResponse(
                 legal=validation.legal,
                 legal_through_ply=validation.legal_through_ply,
+                first_illegal_ply=validation.errors[0].ply if validation.errors else None,
                 errors=[
                     MoveErrorResponse(ply=e.ply, san=e.san, reason=e.reason)
                     for e in validation.errors
@@ -256,6 +257,9 @@ class ReviewService:
 
         game.status = GameStatus.NEEDS_REVIEW
         await self.db.commit()
+        # Force reload of moves — otherwise SQLAlchemy may return the pre-delete list
+        # in the same request/session when building the PATCH response.
+        self.db.expire(game, ["moves"])
         return await self.get_game_for_review(game_id)
 
     async def verify_game(self, game_id: uuid.UUID) -> GameReviewResponse:
