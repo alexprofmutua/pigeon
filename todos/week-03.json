@@ -73,9 +73,9 @@
       "id": "pgn-export",
       "title": "PGN export endpoint + valid .pgn download (ticket 1.8)",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-29T07:56:51.079147+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "fixtures-02-03",
