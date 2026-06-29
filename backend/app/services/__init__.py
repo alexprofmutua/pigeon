@@ -290,6 +290,15 @@ class ReviewService:
         await self.db.commit()
         return await self.get_game_for_review(game_id)
 
+    async def get_pgn_export(self, game_id: uuid.UUID) -> tuple[str, str]:
+        """Return PGN text and a suggested download filename for a verified game."""
+        game = await self._load_game(game_id)
+        if game is None:
+            raise ValueError(f"Game {game_id} not found")
+        if not game.pgn:
+            raise ValueError("PGN not available — verify the game first")
+        return game.pgn, f"pigeon-{game_id}.pgn"
+
     async def _load_game(self, game_id: uuid.UUID) -> Game | None:
         result = await self.db.execute(
             select(Game)
