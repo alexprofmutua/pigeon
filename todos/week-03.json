@@ -49,9 +49,9 @@
       "id": "week2-carryover",
       "title": "Mark Week 2 Cletus tasks done in week-02.json if already shipped",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-29T06:57:16.929578+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "move-parser",
@@ -65,9 +65,9 @@
       "id": "chess-validation",
       "title": "Chess validation \u2014 python-chess, first illegal move (ticket 1.5)",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-29T06:56:09.124654+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "pgn-export",
