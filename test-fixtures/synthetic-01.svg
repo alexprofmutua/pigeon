@@ -16,5 +16,5 @@
   <text x="120" y="210" font-family="monospace" font-size="12">Nf6</text>
   <text x="30" y="235" font-family="monospace" font-size="12">5. O-O</text>
   <text x="120" y="235" font-family="monospace" font-size="12">Be7</text>
-  <text x="20" y="500" font-family="sans-serif" font-size="9" fill="#666">Synthetic  not a real tournament. For OCR testing only.</text>
+  <text x="20" y="500" font-family="sans-serif" font-size="9" fill="#666">Synthetic - not a real tournament. For OCR testing only.</text>
 </svg>
