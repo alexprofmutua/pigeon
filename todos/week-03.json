@@ -81,9 +81,9 @@
       "id": "fixtures-02-03",
       "title": "Add synthetic fixtures 02\u201303 + testing.md notes (ticket 1.10)",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-06-30T08:44:55.104859+00:00",
+      "completed_by": "cletus"
     }
   ]
 }
