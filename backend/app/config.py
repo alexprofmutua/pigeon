@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     app_name: str = "Pigeon"
     debug: bool = False
     database_url: str = "sqlite+aiosqlite:///./chess_archive.db"
-    ocr_provider: str = "mock"
+    ocr_provider: str = "claude_vision"
     storage_dir: str = "./storage"
     max_upload_size_mb: int = 10
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"

@@ -19,7 +19,6 @@ from app.models import (
     UploadStatus,
 )
 from app.ocr import get_ocr_provider
-from app.parsing.move_parser import parse_move_lines, parse_move_text
 from app.pgn.validator import build_pgn, validate_move_sequence
 from app.schemas import (
     FieldWithConfidence,
@@ -86,14 +85,6 @@ class UploadService:
             image_bytes = Path(upload.storage_path).read_bytes()
             ocr_result = await provider.extract(image_bytes, mime_type=upload.mime_type)
 
-            # Tesseract (and other providers) may return raw text without structured moves.
-            # Ticket 1.4: parse lines/text into OcrMoveCandidate list when needed.
-            if not ocr_result.moves:
-                if ocr_result.lines:
-                    ocr_result.moves = parse_move_lines(ocr_result.lines)
-                elif ocr_result.raw_text:
-                    ocr_result.moves = parse_move_text(ocr_result.raw_text)
-
             upload.ocr_provider = ocr_result.provider
             upload.ocr_raw_json = _ocr_result_to_dict(ocr_result)
             upload.status = UploadStatus.COMPLETED
@@ -129,10 +120,26 @@ class UploadService:
         headers = ocr_result.header_fields
 
         if headers.get("event"):
-            event = Event(name=headers["event"], location=headers.get("site"))
+            event = Event(
+                name=headers["event"],
+                location=headers.get("site"),
+                section=headers.get("section"),
+            )
             self.db.add(event)
             await self.db.flush()
             game.event_id = event.id
+
+        if headers.get("board"):
+            try:
+                game.board = int(headers["board"])
+            except (TypeError, ValueError):
+                pass
+
+        if headers.get("round"):
+            try:
+                game.round = int(headers["round"])
+            except (TypeError, ValueError):
+                pass
 
         if headers.get("white"):
             white = Player(name=headers["white"])
@@ -203,6 +210,14 @@ class ReviewService:
                 value=game.event.name if game.event else None,
                 confidence=None,
             ),
+            "section": FieldWithConfidence(
+                value=game.event.section if game.event else None,
+                confidence=None,
+            ),
+            "board": FieldWithConfidence(
+                value=str(game.board) if game.board is not None else None,
+                confidence=None,
+            ),
             "result": FieldWithConfidence(value=game.result, confidence=None),
         }
 
@@ -220,9 +235,10 @@ class ReviewService:
             validation=ValidationResponse(
                 legal=validation.legal,
                 legal_through_ply=validation.legal_through_ply,
-                first_illegal_ply=validation.errors[0].ply if validation.errors else None,
                 errors=[
-                    MoveErrorResponse(ply=e.ply, san=e.san, reason=e.reason)
+                    MoveErrorResponse(
+                        ply=e.ply, san=e.san, reason=e.reason, alternatives=e.alternatives
+                    )
                     for e in validation.errors
                 ],
             ),
@@ -254,12 +270,13 @@ class ReviewService:
             game.black_player.name = payload.black_name
         if payload.event_name and game.event:
             game.event.name = payload.event_name
+        if payload.section is not None and game.event:
+            game.event.section = payload.section
+        if payload.board is not None:
+            game.board = payload.board
 
         game.status = GameStatus.NEEDS_REVIEW
         await self.db.commit()
-        # Force reload of moves — otherwise SQLAlchemy may return the pre-delete list
-        # in the same request/session when building the PATCH response.
-        self.db.expire(game, ["moves"])
         return await self.get_game_for_review(game_id)
 
     async def verify_game(self, game_id: uuid.UUID) -> GameReviewResponse:
@@ -289,15 +306,6 @@ class ReviewService:
         game.status = GameStatus.VERIFIED
         await self.db.commit()
         return await self.get_game_for_review(game_id)
-
-    async def get_pgn_export(self, game_id: uuid.UUID) -> tuple[str, str]:
-        """Return PGN text and a suggested download filename for a verified game."""
-        game = await self._load_game(game_id)
-        if game is None:
-            raise ValueError(f"Game {game_id} not found")
-        if not game.pgn:
-            raise ValueError("PGN not available — verify the game first")
-        return game.pgn, f"pigeon-{game_id}.pgn"
 
     async def _load_game(self, game_id: uuid.UUID) -> Game | None:
         result = await self.db.execute(
@@ -369,53 +377,43 @@ def _avg_confidence(moves: list[GameMove], *, color: str) -> float | None:
 
 
 def _moves_to_pairs(moves: list[GameMove], validation) -> list[MovePairReview]:
-    import chess
+    """Build display pairs for the review UI.
 
-    board = chess.Board()
+    Mirrors validate_move_sequence: the board only advances on moves that
+    are actually legal at the current position. An illegal move is flagged
+    with its ranked alternatives (from validation.errors) but does NOT
+    block validity checks for the moves that follow it -- those are still
+    checked against the last-known-good position, so a single OCR mistake
+    doesn't make the rest of a correct game look wrong.
+    """
+    errors_by_ply = {e.ply: e for e in validation.errors}
+
+    def to_move_with_confidence(move) -> MoveWithConfidence:
+        error = errors_by_ply.get(move.ply)
+        return MoveWithConfidence(
+            san=move.san,
+            confidence=move.confidence,
+            valid=error is None,
+            alternatives=error.alternatives if error else [],
+        )
+
     pairs: list[MovePairReview] = []
     move_number = 1
     i = 0
-
     while i < len(moves):
         white_move = moves[i]
-        white_valid = _is_valid_at_ply(board, white_move.san, white_move.ply, validation)
-        if white_valid:
-            board.push_san(white_move.san)
-
-        black_move = None
-        black_valid = None
-        if i + 1 < len(moves):
-            black_move = moves[i + 1]
-            black_valid = _is_valid_at_ply(board, black_move.san, black_move.ply, validation)
-            if black_valid:
-                board.push_san(black_move.san)
+        black_move = moves[i + 1] if i + 1 < len(moves) else None
 
         pairs.append(
             MovePairReview(
                 move_number=move_number,
-                white=MoveWithConfidence(
-                    san=white_move.san,
-                    confidence=white_move.confidence,
-                    valid=white_valid,
-                ),
-                black=MoveWithConfidence(
-                    san=black_move.san if black_move else None,
-                    confidence=black_move.confidence if black_move else None,
-                    valid=black_valid,
+                white=to_move_with_confidence(white_move),
+                black=to_move_with_confidence(black_move) if black_move else MoveWithConfidence(
+                    san=None, confidence=None, valid=None
                 ),
             )
         )
         move_number += 1
-        i += 2 if black_move else 1
+        i += 2
 
     return pairs
-
-
-def _is_valid_at_ply(board, san: str, ply: int, validation) -> bool:
-    if ply > validation.legal_through_ply:
-        return False
-    try:
-        board.parse_san(san)
-        return True
-    except ValueError:
-        return False

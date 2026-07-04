@@ -104,12 +104,12 @@ class MoveErrorResponse(BaseModel):
     ply: int
     san: str
     reason: str
+    alternatives: list[str] = Field(default_factory=list)
 
 
 class ValidationResponse(BaseModel):
     legal: bool
     legal_through_ply: int
-    first_illegal_ply: int | None
     errors: list[MoveErrorResponse]
 
 
@@ -133,6 +133,8 @@ class ReviewUpdateRequest(BaseModel):
     white_name: str | None = None
     black_name: str | None = None
     event_name: str | None = None
+    board: int | None = None
+    section: str | None = None
 
 
 class MessageResponse(BaseModel):

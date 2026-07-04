@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import CorrectionView from './components/CorrectionView'
-import UploadView from './components/UploadView'
-import './App.css'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { AuthProvider, useAuth } from './context/AuthContext'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import PigeonApp from './pages/PigeonApp'
 
-function App() {
-  const [screen, setScreen] = useState('upload')
-  const [session, setSession] = useState(null)
-
-  const handleUploaded = (data) => {
-    setSession(data)
-    setScreen('correct')
-  }
-
-  return (
-    <div className="app">
-      <nav className="top-nav">
-        <span className="logo">Pigeon</span>
-        <span className="nav-tag">scoresheet → PGN</span>
-      </nav>
-
-      {screen === 'upload' && <UploadView onUploaded={handleUploaded} />}
-
-      {screen === 'correct' && (
-        <CorrectionView
-          previewUrl={session?.previewUrl}
-          upload={session?.upload}
-          onBack={() => setScreen('upload')}
-        />
-      )}
-    </div>
-  )
+function ProtectedRoute({ children }) {
+  const { isAuthenticated, loading } = useAuth()
+  if (loading) return <div className="loading full-screen">Loading Pigeon…</div>
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+  return children
 }
 
-export default App
+export default function App() {
+  return (
+    <AuthProvider>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <PigeonApp />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </AuthProvider>
+  )
+}

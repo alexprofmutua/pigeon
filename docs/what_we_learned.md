@@ -143,4 +143,40 @@ Upload a scoresheet from the browser and get raw OCR text back from the API.
 
 ---
 
-## Week 3 — [fill in when complete]
+## Week 3 — Core loop wired (Jul 2026)
+
+### What we did (Alex — frontend)
+
+- Wired `CorrectionView` to the review API — editable moves, header fields, save via `PATCH /games/{id}/moves`.
+- Added uncertainty highlights on low-confidence moves (confidence below 0.6) and illegal-move styling with suggestion dropdowns.
+- Connected full scan → correct → verify → PGN download flow in the React app.
+- Extended `api.js` with review, update, verify, and PGN download helpers.
+
+### What we did (Cletus — backend)
+
+- Added `game_status` filter on `GET /games` for organizer review queues.
+- Extended OCR and review schemas with board/section fields (Claude vision prompt + review response).
+- PGN export, move parser, chess validation, and synthetic fixtures shipped (see week-03 todos).
+
+### What we accomplished
+
+- Phase 1 core loop complete: upload scoresheet → OCR → review/correct → verify → download `.pgn`.
+- Backend and frontend share one API contract for moves, confidence, and legality checks.
+
+### What we learned
+
+- Low-confidence OCR moves need visible UI treatment — users trust the product when uncertainty is honest.
+- Alternative-move suggestions from python-chess make correction fast when OCR misreads a letter.
+- Board/section metadata on scoresheets matters for tournament archive — worth extracting early.
+
+### Blockers
+
+- Claude vision OCR requires `ANTHROPIC_API_KEY` locally; mock provider still used in CI.
+
+### Next week (Week 4+)
+
+1. Archive and dashboard views (see `scoresheet-archive.html` prototype).
+2. Real-device testing with consented scoresheet photos.
+3. Phase 2 planning — player library and tournament grouping.
+
+---

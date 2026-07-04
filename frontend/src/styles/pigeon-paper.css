@@ -1,0 +1,516 @@
+@import url('https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+.pigeon-root {
+  --ink: #1c1f1a;
+  --paper: #f1ece0;
+  --paper-dim: #e5ddc9;
+  --board-dark: #3a3229;
+  --brass: #8a6d3b;
+  --brass-bright: #b5924f;
+  --flag-red: #a83a2e;
+  --board-green: #4c6b4f;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  background-image: linear-gradient(var(--paper-dim) 1px, transparent 1px);
+  background-size: 100% 2.1em;
+  min-height: 100vh;
+}
+
+.pigeon-root * {
+  box-sizing: border-box;
+}
+
+.pigeon-root .display {
+  font-family: 'Spectral', serif;
+}
+
+.pigeon-root .mono {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.pigeon-shell {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+}
+
+.pigeon-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 3px double var(--ink);
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+}
+
+.pigeon-title {
+  font-family: 'Spectral', serif;
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: 0.3px;
+}
+
+.pigeon-title span {
+  color: var(--brass);
+}
+
+.pigeon-sub {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--board-dark);
+  opacity: 0.65;
+}
+
+.pigeon-nav {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 26px;
+  border: 1.5px solid var(--ink);
+  width: fit-content;
+  flex-wrap: wrap;
+}
+
+.pigeon-nav button {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 9px 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--ink);
+  border-right: 1.5px solid var(--ink);
+}
+
+.pigeon-nav button:last-child {
+  border-right: none;
+}
+
+.pigeon-nav button.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.pigeon-nav button:hover:not(.active) {
+  background: var(--paper-dim);
+}
+
+.pigeon-card {
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  padding: 20px;
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.pigeon-card::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -10px;
+  left: 14px;
+  background: var(--paper);
+  padding: 0 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--brass);
+}
+
+.pigeon-drop-zone {
+  border: 2px dashed var(--board-dark);
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.pigeon-drop-zone:hover {
+  opacity: 1;
+  background: var(--paper-dim);
+}
+
+.pigeon-thumb-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.pigeon-thumb {
+  width: 74px;
+  height: 96px;
+  border: 1.5px solid var(--ink);
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+}
+
+.pigeon-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pigeon-thumb .status {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 8px;
+  text-align: center;
+  padding: 2px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.pigeon-thumb .status.ok {
+  background: var(--board-green);
+  color: #fff;
+}
+
+.pigeon-thumb .status.err {
+  background: var(--flag-red);
+  color: #fff;
+}
+
+.pigeon-thumb .status.pending {
+  background: var(--brass);
+  color: #fff;
+}
+
+.pigeon-root button.primary {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 11px 20px;
+  cursor: pointer;
+  margin-top: 14px;
+}
+
+.pigeon-root button.primary:hover {
+  background: var(--brass);
+}
+
+.pigeon-root button.primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pigeon-root button.ghost {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.pigeon-root button.ghost:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.pigeon-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pigeon-root label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--board-dark);
+  margin-bottom: 4px;
+}
+
+.pigeon-root input[type='text'],
+.pigeon-root input[type='date'],
+.pigeon-root input[type='number'],
+.pigeon-root input[type='email'],
+.pigeon-root input[type='password'],
+.pigeon-root textarea,
+.pigeon-root select {
+  width: 100%;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  padding: 8px 9px;
+  border: 1.5px solid var(--board-dark);
+  background: #fffdf8;
+  color: var(--ink);
+}
+
+.pigeon-root textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.pigeon-movegrid {
+  display: grid;
+  grid-template-columns: 32px 1fr 1fr;
+  gap: 1px;
+  background: var(--board-dark);
+  border: 1.5px solid var(--board-dark);
+  margin-top: 10px;
+}
+
+.pigeon-movegrid > div {
+  background: #fffdf8;
+  padding: 6px 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+}
+
+.pigeon-movegrid .hd {
+  background: var(--board-dark);
+  color: var(--paper);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pigeon-movecell {
+  cursor: pointer;
+  position: relative;
+}
+
+.pigeon-movecell.bad {
+  color: var(--flag-red);
+  font-weight: 600;
+  text-decoration: underline wavy var(--flag-red);
+}
+
+.pigeon-movecell.editing input {
+  width: 100%;
+  border: 1.5px solid var(--brass);
+  font-family: inherit;
+  font-size: inherit;
+  padding: 2px 4px;
+}
+
+.pigeon-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 11px;
+  min-width: 140px;
+  box-shadow: 3px 3px 0 var(--brass);
+}
+
+.pigeon-suggestions button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  cursor: pointer;
+  border: none;
+  border-bottom: 1px solid #444;
+  background: transparent;
+  color: inherit;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+}
+
+.pigeon-suggestions button:hover {
+  background: var(--brass);
+}
+
+.pigeon-suggestions button:last-child {
+  border-bottom: none;
+}
+
+.pigeon-tourn-list {
+  display: grid;
+  gap: 10px;
+}
+
+.pigeon-tourn-item {
+  border: 1.5px solid var(--ink);
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+}
+
+.pigeon-tourn-item:hover {
+  background: var(--paper-dim);
+}
+
+.pigeon-tourn-item .name {
+  font-family: 'Spectral', serif;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.pigeon-tourn-item .meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.pigeon-game-row {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--paper-dim);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+}
+
+.pigeon-game-row:hover {
+  background: var(--paper-dim);
+}
+
+.pigeon-result-badge {
+  font-weight: 700;
+  padding: 2px 8px;
+  border: 1.5px solid var(--ink);
+  font-size: 11px;
+}
+
+.pigeon-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.pigeon-stat-box {
+  border: 1.5px solid var(--ink);
+  padding: 16px;
+  text-align: center;
+}
+
+.pigeon-stat-box .num {
+  font-family: 'Spectral', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--brass);
+}
+
+.pigeon-stat-box .lbl {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.pigeon-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+}
+
+.pigeon-bar-row .lbl {
+  width: 130px;
+  flex-shrink: 0;
+}
+
+.pigeon-bar-row .track {
+  flex: 1;
+  height: 14px;
+  background: var(--paper-dim);
+  position: relative;
+}
+
+.pigeon-bar-row .fill {
+  height: 100%;
+  background: var(--board-green);
+}
+
+.pigeon-bar-row .val {
+  width: 60px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.pigeon-empty {
+  text-align: center;
+  padding: 40px 20px;
+  opacity: 0.6;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+}
+
+.pigeon-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 18px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  z-index: 100;
+  border-left: 4px solid var(--brass);
+}
+
+.pigeon-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--paper-dim);
+  border-top-color: var(--brass);
+  border-radius: 50%;
+  animation: pigeon-spin 0.7s linear infinite;
+}
+
+@keyframes pigeon-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pigeon-tag {
+  display: inline-block;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: var(--brass);
+  color: #fff;
+  padding: 2px 6px;
+  margin-left: 6px;
+}
+
+.pigeon-header-actions {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+}
+
+.pigeon-header-actions button.ghost {
+  margin-top: 0;
+}
+
+@media (max-width: 640px) {
+  .pigeon-stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pigeon-field-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
-from app.models import Event, Game, Player
+from app.models import Event, Game, GameStatus, Player
 from app.schemas import (
     EventCreate,
     EventResponse,
@@ -15,7 +15,6 @@ from app.schemas import (
     PlayerCreate,
     PlayerResponse,
 )
-from app.services import ReviewService
 
 router = APIRouter()
 
@@ -69,8 +68,14 @@ async def create_game(payload: GameCreate, db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/games", response_model=list[GameResponse])
-async def list_games(db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Game).order_by(Game.created_at.desc()))
+async def list_games(
+    game_status: GameStatus | None = None,
+    db: AsyncSession = Depends(get_db),
+):
+    query = select(Game).order_by(Game.created_at.desc())
+    if game_status is not None:
+        query = query.where(Game.status == game_status)
+    result = await db.execute(query)
     return result.scalars().all()
 
 
@@ -83,16 +88,12 @@ async def get_game(game_id: UUID, db: AsyncSession = Depends(get_db)):
     return game
 
 
-@router.get("/games/{game_id}/pgn")
+@router.get("/games/{game_id}/pgn", response_class=PlainTextResponse)
 async def export_pgn(game_id: UUID, db: AsyncSession = Depends(get_db)):
-    service = ReviewService(db)
-    try:
-        pgn, filename = await service.get_pgn_export(game_id)
-    except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
-
-    return PlainTextResponse(
-        content=pgn,
-        media_type="text/plain; charset=utf-8",
-        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
-    )
+    result = await db.execute(select(Game).where(Game.id == game_id))
+    game = result.scalar_one_or_none()
+    if game is None:
+        raise HTTPException(status_code=404, detail="Game not found")
+    if not game.pgn:
+        raise HTTPException(status_code=404, detail="PGN not available — verify the game first")
+    return game.pgn

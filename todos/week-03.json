@@ -9,41 +9,41 @@
       "id": "correction-wired",
       "title": "Wire correction screen to review API \u2014 editable moves (ticket 1.6)",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-07-03T18:50:00+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "uncertainty-ui",
       "title": "Uncertainty highlights on low-confidence moves (ticket 1.7)",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-07-03T18:50:00+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "e2e-flow",
       "title": "Wire full scan \u2192 correct \u2192 export flow in frontend (ticket 1.9)",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-07-03T18:50:00+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "pgn-download-ui",
       "title": "PGN download button in UI (pairs with export API, ticket 1.8)",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-07-03T18:50:00+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "week-3-log",
       "title": "Update what_we_learned.md \u2014 Week 3 section",
       "owner": "alex",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-07-03T18:50:00+00:00",
+      "completed_by": "alex"
     },
     {
       "id": "week2-carryover",
