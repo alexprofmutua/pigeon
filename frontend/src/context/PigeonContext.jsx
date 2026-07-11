@@ -210,6 +210,7 @@ export function PigeonProvider({ children }) {
         event_name: g.tournament,
         board: g.board ? parseInt(g.board, 10) || null : null,
         section: g.section || null,
+        round: g.round ? parseInt(g.round, 10) || null : null,
       }
       await api.updateMoves(g.backendGameId, payload)
       await api.verifyGame(g.backendGameId)

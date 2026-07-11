@@ -135,6 +135,7 @@ class ReviewUpdateRequest(BaseModel):
     event_name: str | None = None
     board: int | None = None
     section: str | None = None
+    round: int | None = None
 
 
 class MessageResponse(BaseModel):

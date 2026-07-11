@@ -1,0 +1,81 @@
+{
+  "week": 4,
+  "phase": "Phase 2 \u2014 Archive (Week 1 of 3)",
+  "label": "Week 4",
+  "goal": "Games persist and group by tournament \u2014 browse, search, replay.",
+  "notes": "Phase 1 complete. Week 4 starts library + replay. Cletus owns search API and event CRUD tests.",
+  "tasks": [
+    {
+      "id": "save-metadata",
+      "title": "Save game metadata flow \u2014 event, round, players, result on verify (ticket 2.3)",
+      "owner": "alex",
+      "done": true,
+      "completed_at": "2026-07-11T07:21:09.995425+00:00",
+      "completed_by": "alex"
+    },
+    {
+      "id": "library-browse",
+      "title": "Library UI in Pigeon \u2014 browse events, open game list (ticket 2.4)",
+      "owner": "alex",
+      "done": true,
+      "completed_at": "2026-07-11T07:21:10.017600+00:00",
+      "completed_by": "alex"
+    },
+    {
+      "id": "archive-search-ui",
+      "title": "Archive search/filter UI \u2014 player, event, result (ticket 2.5 UI)",
+      "owner": "alex",
+      "done": true,
+      "completed_at": "2026-07-11T07:21:10.036381+00:00",
+      "completed_by": "alex"
+    },
+    {
+      "id": "replay-in-archive",
+      "title": "Replay board from archive \u2014 step through verified games (ticket 2.6)",
+      "owner": "alex",
+      "done": true,
+      "completed_at": "2026-07-11T07:21:10.056162+00:00",
+      "completed_by": "alex"
+    },
+    {
+      "id": "dashboard-openings",
+      "title": "Dashboard opening stats \u2014 top openings as White/Black (client-side)",
+      "owner": "alex",
+      "done": true,
+      "completed_at": "2026-07-11T07:21:10.075005+00:00",
+      "completed_by": "alex"
+    },
+    {
+      "id": "week-4-log",
+      "title": "Update what_we_learned.md \u2014 Week 4 section",
+      "owner": "alex",
+      "done": true,
+      "completed_at": "2026-07-11T07:21:10.093413+00:00",
+      "completed_by": "alex"
+    },
+    {
+      "id": "event-crud-tests",
+      "title": "Event CRUD API tests + attach games to events (ticket 2.2)",
+      "owner": "cletus",
+      "done": false,
+      "completed_at": null,
+      "completed_by": null
+    },
+    {
+      "id": "search-api",
+      "title": "Search API \u2014 filter games by player, event, date, result (ticket 2.5)",
+      "owner": "cletus",
+      "done": false,
+      "completed_at": null,
+      "completed_by": null
+    },
+    {
+      "id": "schema-migrations",
+      "title": "Review Phase 2 schema + migrations clean on fresh clone (ticket 2.1)",
+      "owner": "cletus",
+      "done": false,
+      "completed_at": null,
+      "completed_by": null
+    }
+  ]
+}

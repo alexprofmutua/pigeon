@@ -264,16 +264,38 @@ class ReviewService:
         if payload.result is not None:
             game.result = payload.result
 
-        if payload.white_name and game.white_player:
-            game.white_player.name = payload.white_name
-        if payload.black_name and game.black_player:
-            game.black_player.name = payload.black_name
-        if payload.event_name and game.event:
-            game.event.name = payload.event_name
-        if payload.section is not None and game.event:
+        if payload.white_name:
+            if game.white_player:
+                game.white_player.name = payload.white_name
+            else:
+                white = Player(name=payload.white_name)
+                self.db.add(white)
+                await self.db.flush()
+                game.white_player_id = white.id
+        if payload.black_name:
+            if game.black_player:
+                game.black_player.name = payload.black_name
+            else:
+                black = Player(name=payload.black_name)
+                self.db.add(black)
+                await self.db.flush()
+                game.black_player_id = black.id
+        if payload.event_name:
+            if game.event:
+                game.event.name = payload.event_name
+                if payload.section is not None:
+                    game.event.section = payload.section
+            else:
+                event = Event(name=payload.event_name, section=payload.section)
+                self.db.add(event)
+                await self.db.flush()
+                game.event_id = event.id
+        elif payload.section is not None and game.event:
             game.event.section = payload.section
         if payload.board is not None:
             game.board = payload.board
+        if payload.round is not None:
+            game.round = payload.round
 
         game.status = GameStatus.NEEDS_REVIEW
         await self.db.commit()

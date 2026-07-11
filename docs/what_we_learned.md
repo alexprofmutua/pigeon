@@ -173,10 +173,40 @@ Upload a scoresheet from the browser and get raw OCR text back from the API.
 
 - Claude vision OCR requires `ANTHROPIC_API_KEY` locally; mock provider still used in CI.
 
-### Next week (Week 4+)
+---
 
-1. Archive and dashboard views (see `scoresheet-archive.html` prototype).
-2. Real-device testing with consented scoresheet photos.
-3. Phase 2 planning — player library and tournament grouping.
+## Week 4 — Archive & replay (Jul 2026)
+
+### What we did (Alex — frontend)
+
+- Archive tab: create tournament, search/filter games, browse events → game lists.
+- Replay panel: step through verified games on a chess board from saved PGN.
+- Dashboard: win rate as White/Black, top openings computed client-side from PGN.
+- Save flow sends full metadata (event, round, board, section, players) on verify.
+
+### What we did (Alex — backend support for save flow)
+
+- Review update creates Event and Player records when missing, so new tournament names persist on verify.
+
+### What we accomplished
+
+- Phase 2 kickoff: saved games are browsable, searchable, and replayable in the Pigeon paper UI.
+- Week 4 Alex todos complete; Cletus owns search API and event CRUD tests next.
+
+### What we learned
+
+- Client-side PGN replay avoids waiting on a dedicated replay endpoint — chess.js is enough for v1.
+- Opening stats need verified PGN on disk; dashboard stays empty until games are saved through Review.
+
+### Blockers
+
+- Search is client-side only until Cletus ships `GET /games/search`.
+- Auth still local-dev only — no per-user archive isolation yet.
+
+### Next week (Week 5)
+
+1. Cletus: search API + event CRUD tests.
+2. Alex: polish replay UX, mobile layout pass on archive.
+3. Both: save 2+ games under one event for Phase 2 exit demo.
 
 ---
