@@ -133,6 +133,7 @@ class ReviewUpdateRequest(BaseModel):
     white_name: str | None = None
     black_name: str | None = None
     event_name: str | None = None
+    event_id: UUID | None = None
     board: int | None = None
     section: str | None = None
     round: int | None = None

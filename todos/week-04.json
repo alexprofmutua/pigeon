@@ -57,9 +57,9 @@
       "id": "event-crud-tests",
       "title": "Event CRUD API tests + attach games to events (ticket 2.2)",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-07-13T18:58:05.135656+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "search-api",

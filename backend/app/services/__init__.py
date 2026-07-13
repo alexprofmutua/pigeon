@@ -280,7 +280,15 @@ class ReviewService:
                 self.db.add(black)
                 await self.db.flush()
                 game.black_player_id = black.id
-        if payload.event_name:
+        if payload.event_id is not None:
+            result = await self.db.execute(select(Event).where(Event.id == payload.event_id))
+            event = result.scalar_one_or_none()
+            if event is None:
+                raise ValueError(f"Event {payload.event_id} not found")
+            game.event_id = payload.event_id
+            if payload.section is not None:
+                event.section = payload.section
+        elif payload.event_name:
             if game.event:
                 game.event.name = payload.event_name
                 if payload.section is not None:
@@ -299,6 +307,7 @@ class ReviewService:
 
         game.status = GameStatus.NEEDS_REVIEW
         await self.db.commit()
+        self.db.expire(game, ["moves", "event"])
         return await self.get_game_for_review(game_id)
 
     async def verify_game(self, game_id: uuid.UUID) -> GameReviewResponse:
@@ -328,6 +337,15 @@ class ReviewService:
         game.status = GameStatus.VERIFIED
         await self.db.commit()
         return await self.get_game_for_review(game_id)
+
+    async def get_pgn_export(self, game_id: uuid.UUID) -> tuple[str, str]:
+        """Return PGN text and a suggested download filename for a verified game."""
+        game = await self._load_game(game_id)
+        if game is None:
+            raise ValueError(f"Game {game_id} not found")
+        if not game.pgn:
+            raise ValueError("PGN not available — verify the game first")
+        return game.pgn, f"pigeon-{game_id}.pgn"
 
     async def _load_game(self, game_id: uuid.UUID) -> Game | None:
         result = await self.db.execute(
