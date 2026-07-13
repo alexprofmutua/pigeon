@@ -44,16 +44,21 @@ def test_first_illegal_move_returns_ply_index():
     assert report.errors[0].reason  # non-empty message from python-chess
 
 
-def test_stops_at_first_illegal_move_only():
-    # Two bad moves in a row — validator should report only the first
+def test_reports_each_illegal_move_at_same_position():
+    # After Ke9 fails, the board stays put — Qh9 is also checked at that
+    # position and reported separately (with alternatives), not silently skipped.
     moves = ["e4", "c5", "Ke9", "Qh9"]
 
     report = validate_move_sequence(moves)
 
     assert report.legal is False
-    assert len(report.errors) == 1
+    assert report.legal_through_ply == 2
+    assert len(report.errors) == 2
     assert report.errors[0].ply == 3
     assert report.errors[0].san == "Ke9"
+    assert report.errors[1].ply == 4
+    assert report.errors[1].san == "Qh9"
+    assert report.errors[0].alternatives  # hint moves for correction UI
 
 
 def test_illegal_first_move():

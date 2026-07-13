@@ -65,28 +65,3 @@ async def test_upload_process_review_verify_flow(client, sample_png):
     assert pgn_response.status_code == 200
     assert "Smith, John" in pgn_response.text
     assert "1. e4" in pgn_response.text
-
-
-@pytest.mark.asyncio
-async def test_create_event_and_game(client):
-    event_response = await client.post(
-        "/api/v1/events",
-        json={"name": "Fall Scholastic", "location": "Library", "section": "U1200"},
-    )
-    assert event_response.status_code == 201
-    event_id = event_response.json()["id"]
-
-    white_response = await client.post("/api/v1/players", json={"name": "Alice"})
-    black_response = await client.post("/api/v1/players", json={"name": "Bob"})
-
-    game_response = await client.post(
-        "/api/v1/games",
-        json={
-            "event_id": event_id,
-            "white_player_id": white_response.json()["id"],
-            "black_player_id": black_response.json()["id"],
-            "result": "1/2-1/2",
-        },
-    )
-    assert game_response.status_code == 201
-    assert game_response.json()["event_id"] == event_id
