@@ -79,14 +79,57 @@ jobs:
     - name: Install dependencies
       run: pip install -r backend/requirements.txt
 
-    - name: Run Postgres migration roundtrip
+    - name: Wait for Postgres
+      working-directory: backend
+      env:
+        DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/chess_archive
+      run: |
+        python - <<'PY'
+        import asyncio
+        import sys
+        import time
+
+        import asyncpg
+
+        async def wait():
+            for _ in range(30):
+                try:
+                    conn = await asyncpg.connect(
+                        "postgresql://postgres:postgres@localhost:5432/chess_archive"
+                    )
+                    await conn.close()
+                    return
+                except Exception:
+                    time.sleep(1)
+            print("Postgres did not become ready in time", file=sys.stderr)
+            sys.exit(1)
+
+        asyncio.run(wait())
+        PY
+
+    - name: Alembic upgrade head
+      working-directory: backend
+      env:
+        DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/chess_archive
+      run: alembic upgrade head
+
+    - name: Alembic check
+      working-directory: backend
+      env:
+        DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/chess_archive
+      run: alembic check
+
+    - name: Alembic downgrade and re-upgrade
+      working-directory: backend
+      env:
+        DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/chess_archive
+      run: |
+        alembic downgrade base
+        alembic upgrade head
+
+    - name: Postgres migration pytest
       working-directory: backend
       env:
         DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/chess_archive
         RUN_POSTGRES_MIGRATION_TEST: "1"
-      run: |
-        alembic upgrade head
-        alembic check
-        alembic downgrade base
-        alembic upgrade head
-        pytest tests/test_migrations.py -v
+      run: pytest tests/test_migrations.py::test_migrations_upgrade_downgrade_roundtrip_postgres -v
