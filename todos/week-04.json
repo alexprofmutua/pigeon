@@ -65,9 +65,9 @@
       "id": "search-api",
       "title": "Search API \u2014 filter games by player, event, date, result (ticket 2.5)",
       "owner": "cletus",
-      "done": false,
-      "completed_at": null,
-      "completed_by": null
+      "done": true,
+      "completed_at": "2026-07-14T00:15:15.734125+00:00",
+      "completed_by": "cletus"
     },
     {
       "id": "schema-migrations",

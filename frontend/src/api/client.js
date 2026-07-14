@@ -74,6 +74,12 @@ export const api = {
     ).toString()
     return request(`/api/v1/games${qs ? `?${qs}` : ''}`)
   },
+  searchGames: (params = {}) => {
+  const qs = new URLSearchParams(
+    Object.fromEntries(Object.entries(params).filter(([, v]) => v != null && v !== ''))
+  ).toString()
+  return request(`/api/v1/games/search${qs ? `?${qs}` : ''}`)
+  },
   getGame: (id) => request(`/api/v1/games/${id}`),
   getReview: (id) => request(`/api/v1/games/${id}/review`),
   updateMoves: (id, body) =>
