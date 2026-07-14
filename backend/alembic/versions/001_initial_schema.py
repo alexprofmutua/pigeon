@@ -91,3 +91,10 @@ def downgrade() -> None:
     op.drop_table("games")
     op.drop_table("players")
     op.drop_table("events")
+
+    # PostgreSQL keeps enum types after drop_table; remove them so upgrade can rerun.
+    bind = op.get_bind()
+    if bind.dialect.name == "postgresql":
+        op.execute("DROP TYPE IF EXISTS upload_status")
+        op.execute("DROP TYPE IF EXISTS move_source")
+        op.execute("DROP TYPE IF EXISTS game_status")

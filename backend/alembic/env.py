@@ -1,6 +1,7 @@
 import asyncio
 from logging.config import fileConfig
 
+import sqlalchemy as sa
 from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
@@ -19,11 +20,26 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 
+def _compare_type(context, inspected_column, metadata_column, inspected_type, metadata_type):
+    # SQLite stores sa.Uuid() columns as CHAR(32); ignore that autogenerate noise.
+    if context.dialect.name == "sqlite":
+        if isinstance(inspected_type, sa.CHAR) and isinstance(metadata_type, sa.Uuid):
+            return False
+    return None
+
+
+def _configure_context(**kwargs):
+    return context.configure(
+        target_metadata=target_metadata,
+        compare_type=_compare_type,
+        **kwargs,
+    )
+
+
 def run_migrations_offline() -> None:
     url = config.get_main_option("sqlalchemy.url")
-    context.configure(
+    _configure_context(
         url=url,
-        target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
@@ -33,7 +49,7 @@ def run_migrations_offline() -> None:
 
 
 def do_run_migrations(connection: Connection) -> None:
-    context.configure(connection=connection, target_metadata=target_metadata)
+    _configure_context(connection=connection)
 
     with context.begin_transaction():
         context.run_migrations()
