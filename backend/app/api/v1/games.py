@@ -1,9 +1,11 @@
+from datetime import date
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import PlainTextResponse
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased
 
 from app.database import get_db
 from app.models import Event, Game, GameStatus, Player
@@ -81,6 +83,58 @@ async def list_games(
         query = query.where(Game.event_id == event_id)
     result = await db.execute(query)
     return result.scalars().all()
+
+
+@router.get("/games/search", response_model=list[GameResponse])
+async def search_games(
+    q: str | None = None,
+    player: str | None = None,
+    event_id: UUID | None = None,
+    event_name: str | None = None,
+    result: str | None = None,
+    date_from: date | None = None,
+    date_to: date | None = None,
+    game_status: GameStatus | None = None,
+    db: AsyncSession = Depends(get_db),
+):
+    white = aliased(Player)
+    black = aliased(Player)
+
+    query = (
+        select(Game)
+        .outerjoin(Event, Game.event_id == Event.id)
+        .outerjoin(white, Game.white_player_id == white.id)
+        .outerjoin(black, Game.black_player_id == black.id)
+        .order_by(Game.created_at.desc())
+    )
+
+    if game_status is not None:
+        query = query.where(Game.status == game_status)
+    if event_id is not None:
+        query = query.where(Game.event_id == event_id)
+    if event_name is not None:
+        query = query.where(Event.name.ilike(f"%{event_name}%"))
+    if result is not None:
+        query = query.where(Game.result == result)
+    if player is not None:
+        pattern = f"%{player}%"
+        query = query.where(or_(white.name.ilike(pattern), black.name.ilike(pattern)))
+    if date_from is not None:
+        query = query.where(Event.start_date >= date_from)
+    if date_to is not None:
+        query = query.where(Event.start_date <= date_to)
+    if q is not None:
+        pattern = f"%{q}%"
+        query = query.where(
+            or_(
+                white.name.ilike(pattern),
+                black.name.ilike(pattern),
+                Event.name.ilike(pattern),
+            )
+        )
+
+    rows = await db.execute(query)
+    return rows.scalars().unique().all()
 
 
 @router.get("/games/{game_id}", response_model=GameResponse)
